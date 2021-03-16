@@ -1,0 +1,113 @@
+﻿<mah:MetroWindow x:Class="Telltale_IMAP_Editor.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:Telltale_IMAP_Editor"
+        mc:Ignorable="d"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
+        Title="Input Mapping Editor" Height="419.89" Width="729.975" ResizeMode="CanResizeWithGrip" MinHeight="216.625" MinWidth="562.635">
+
+    <mah:MetroWindow.LeftWindowCommands>
+        <mah:WindowCommands HorizontalAlignment="Center" VerticalAlignment="Center" HorizontalContentAlignment="Center" VerticalContentAlignment="Center">
+            <iconPacks:BootstrapIcons Width="40" Height="17" Kind="Keyboard" />
+        </mah:WindowCommands>
+    </mah:MetroWindow.LeftWindowCommands>
+
+    <mah:MetroWindow.RightWindowCommands>
+        <mah:WindowCommands>
+            <Label Name="ui_window_appversion_label" Content="v1.0.0" ToolTip="Application Version"/>
+            <Button Name="ui_window_help_button" Content="Help" ToolTip="Get Help for this Application." Click="ui_window_help_button_Click">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconModern Width="22"
+                                        Height="22"
+                                        VerticalAlignment="Center"
+                                        Kind="BookPerspectiveHelp" />
+                            <TextBlock Margin="4 0 0 0"
+                         VerticalAlignment="Center"
+                         Text="{Binding}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
+        </mah:WindowCommands>
+    </mah:MetroWindow.RightWindowCommands>
+
+    <Grid>
+        <DockPanel VerticalAlignment="Top">
+            <Menu DockPanel.Dock="Top" Margin="0" HorizontalContentAlignment="Stretch">
+                <MenuItem Name="ui_menu_file_open" Header="Open File" Margin="7,0,0,0" Click="ui_menu_file_open_Click" ToolTip="Opens an .imap file.">
+                    <MenuItem.Icon>
+                        <iconPacks:Codicons Kind="FolderOpened"></iconPacks:Codicons>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="ui_menu_file_save" Header="Save" Margin="7,0,0,0" Click="ui_menu_file_save_Click" InputGestureText="Ctrl+S" ToolTip="Saves the current .imap file.">
+                    <MenuItem.Icon>
+                        <iconPacks:Codicons Kind="Save"></iconPacks:Codicons>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Name="ui_menu_file_saveAs" Header="Save As" Margin="7,0,0,0" Click="ui_menu_file_saveAs_Click" InputGestureText="Ctrl+Shift+S" ToolTip="Saves the current .imap file under a different name.">
+                    <MenuItem.Icon>
+                        <iconPacks:Codicons Kind="SaveAs"></iconPacks:Codicons>
+                    </MenuItem.Icon>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+
+        <Grid Margin="0,35,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" MinWidth="200"></ColumnDefinition>
+                <ColumnDefinition Width="5"></ColumnDefinition>
+                <ColumnDefinition Width="*" MinWidth="350"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <TextBox Name="ui_filelocation_textbox" Height="22" Margin="10,10,10,0" TextWrapping="Wrap" Text=".imap File Location" IsReadOnly="True" VerticalAlignment="Top" MouseDoubleClick="ui_filelocation_textbox_MouseDoubleClick" ToolTip="The path of the currently open .imap file on the disk."/>
+                <ListView Name="ui_eventmappings_listview" Margin="10,41,10,55" SelectionChanged="ui_eventmappings_listview_SelectionChanged" ToolTip="The main listview for all of the event map entries in the imap file.">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Input Code" DisplayMemberBinding="{Binding InputKeyCode}" />
+                            <GridViewColumn Header="Event Type"  DisplayMemberBinding="{Binding EventType}" />
+                            <GridViewColumn Header="Lua Function Name"  DisplayMemberBinding="{Binding LuaScriptFunctionName}" />
+                            <GridViewColumn Header="Controller Index Override"  DisplayMemberBinding="{Binding ControllerIndexOverride}" />
+                        </GridView>
+                    </ListView.View>
+                    <ListView.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Name="ui_eventmappings_contextmenu_add" Header="Add Entry" Click="ui_eventmappings_contextmenu_add_Click" ToolTip="Adds a new .imap entry into the file."></MenuItem>
+                            <MenuItem Name="ui_eventmappings_contextmenu_remove" Header="Remove Entry" Click="ui_eventmappings_contextmenu_remove_Click" ToolTip="Removes an existing .imap entry from the file."></MenuItem>
+                        </ContextMenu>
+                    </ListView.ContextMenu>
+                </ListView>
+
+                <Button Name="ui_eventmappings_add_button" HorizontalAlignment="Left" Margin="10,0,0,10" VerticalAlignment="Bottom" Width="40" Height="40" Click="ui_eventmappings_add_button_Click" ToolTip="Adds a new .imap entry into the file.">
+                    <iconPacks:BootstrapIcons Width="20" Height="20" Kind="Plus"></iconPacks:BootstrapIcons>
+                </Button>
+
+                <Button Name="ui_eventmappings_remove_button" HorizontalAlignment="Left" Margin="55,0,0,10" VerticalAlignment="Bottom" Width="40" Height="40" Click="ui_eventmappings_remove_button_Click" ToolTip="Removes an existing .imap entry from the file.">
+                    <iconPacks:BootstrapIcons Width="20" Height="20" Kind="Dash"></iconPacks:BootstrapIcons>
+                </Button>
+            </Grid>
+
+            <GridSplitter Grid.Column="1" HorizontalAlignment="Stretch" Width="5" ResizeDirection="Columns"/>
+
+            <Grid Grid.Column="2">
+                <Label Name="ui_inputkeycode_label" Content="Input Key Code" Margin="10,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168"/>
+                <Label Name="ui_eventtype_label" Content="Event Type" Margin="10,41,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168"/>
+                <Label Name="ui_luascriptfunctionname_label" Content="Lua Script Function Name" Margin="10,72,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168"/>
+                <Label Name="ui_controllerindexoverride_label" Content="Controller Index Override" Margin="10,103,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="168"/>
+
+                <ComboBox Name="ui_inputkeycode_combobox" Margin="183,10,10,0" VerticalAlignment="Top" Height="26" IsEditable="False" ToolTip="The input code key for the imap entry."/>
+                <ComboBox Name="ui_eventtype_combobox" Margin="183,41,10,0" VerticalAlignment="Top" Height="26" IsEditable="False" ToolTip="The event type for the imap entry."/>
+                <TextBox Name="ui_luascriptfunctionname_textbox" Height="26" Margin="183,72,10,0" TextWrapping="Wrap" Text="Lua Function Name" VerticalAlignment="Top" ToolTip="The name of the lua function the imap entry references."/>
+                <TextBox Name="ui_controllerindexoverride_textbox" Height="26" Margin="183,103,10,0" TextWrapping="Wrap" Text="-1" VerticalAlignment="Top" ToolTip="The controller index override for the imap entry. This is -1 by default even with actual controller key entries and we recomend you keep it that way."/>
+
+                <Button Name="ui_eventmappings_savechanges_button" Content="Save Changes" Margin="183,134,10,0" VerticalAlignment="Top" Height="22" Click="ui_eventmappings_savechanges_button_Click" ToolTip="Saves any changes made to the currently selected imap entry."/>
+            </Grid>
+        </Grid>
+    </Grid>
+</mah:MetroWindow>
