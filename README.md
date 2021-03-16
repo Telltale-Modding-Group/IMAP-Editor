@@ -7,11 +7,11 @@
 **If you need help or have questions about the application, click [HERE](https://github.com/Telltale-Modding-Group/IMAP-Editor/wiki)!**
 
 ## About
-This application is designed to edit .imap files that exist within a Telltale game.
+**This application is designed to edit .imap files that exist within a Telltale game.**
 
-**.imap = Input Mappings**
+***.imap = Input Mappings***
 
-.imap files are responsible for most of the input that you have in a Telltale game, with the editor you'll be able to modify and change/rebind key bindings to whatever you like. You can also add or remove imap entries and add in your own custom lua function names. Credit to Lucas for the super handy [LibTelltale](https://github.com/LucasSaragosa/LibTelltale) library!
+**.imap** files are responsible for most of the input that you have in a Telltale game, with the editor you'll be able to modify and change/rebind key bindings to whatever you like. You can also add or remove imap entries and add in your own custom lua function names. **Credit to Lucas for the super handy [LibTelltale](https://github.com/LucasSaragosa/LibTelltale) library!**
 
 ![Thumb](screenshots/thumb.png)
 
