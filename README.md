@@ -16,7 +16,7 @@ This application is designed to edit .imap files that exist within a Telltale ga
 ![Thumb](screenshots/thumb.png)
 
 ## Supported Games
-The imap editor uses LibTelltale v3.0.0, as of that version it currently supports the following games (not all have been tested)
+The imap editor uses [LibTelltale v3.0.0](https://github.com/LucasSaragosa/LibTelltale), as of that version it currently supports the following games (not all have been tested)
 
 ***
 - The_Walking_Dead_Definitive_Series
