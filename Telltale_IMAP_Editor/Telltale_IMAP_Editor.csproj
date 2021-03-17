@@ -26,6 +26,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   
   <Target Name="CopyPackageAssembliesToSubFolder" AfterTargets="ResolveReferences">
