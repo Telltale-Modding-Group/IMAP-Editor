@@ -15,6 +15,11 @@
 
 ![Thumb](screenshots/thumb.png)
 
+## INSTALLATION (REQUIRED)
+
+1. Download the latest app from the **[releases tab]((https://github.com/Telltale-Modding-Group/IMAP-Editor/releases))**.
+2. Download and install the **[Windows 10 SDK](https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/)**.
+
 ## Supported Games
 The imap editor uses [LibTelltale v3.0.0](https://github.com/LucasSaragosa/LibTelltale), as of that version it currently supports the following games (not all have been tested)
 
