@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LibTelltale;
+using ControlzEx.Theming;
 using Telltale_IMAP_Editor.Utillities;
 
 namespace Telltale_IMAP_Editor
@@ -25,6 +26,9 @@ namespace Telltale_IMAP_Editor
     {
         //main class for editor functionality
         private Editor editor;
+
+        public string appTheme;
+        private bool isLightTheme;
 
         //imap file window opener
         private OpenFile_SetGameVersion openFile_SetGameVersion;
@@ -70,6 +74,12 @@ namespace Telltale_IMAP_Editor
             if (editor == null)
                 return;
 
+            //get the UI theme based on what is toggled
+            appTheme = isLightTheme ? "Light.Blue" : "Dark.Blue";
+
+            //set the theme of all of our windows to what we toggled
+            ThemeManager.Current.ChangeTheme(this, appTheme);
+
             //show the path of the currently open imap file
             ui_filelocation_textbox.Text = editor.currentlyOpenFilePath;
 
@@ -83,12 +93,18 @@ namespace Telltale_IMAP_Editor
 
             //do we have an item selected?
             bool isSelected = ui_eventmappings_listview.SelectedItem != null;
+            Visibility isSelected_visible = ui_eventmappings_listview.SelectedItem != null ? Visibility.Visible : Visibility.Hidden;
 
             //enable these if an item is selected
             ui_eventtype_combobox.IsEnabled = isSelected;
             ui_inputkeycode_combobox.IsEnabled = isSelected;
             ui_controllerindexoverride_textbox.IsEnabled = isSelected;
             ui_luascriptfunctionname_textbox.IsEnabled = isSelected;
+
+            ui_eventtype_combobox.Visibility = isSelected_visible;
+            ui_inputkeycode_combobox.Visibility = isSelected_visible;
+            ui_controllerindexoverride_textbox.Visibility = isSelected_visible;
+            ui_luascriptfunctionname_textbox.Visibility = isSelected_visible;
 
             //if we have an item selected, fill out the UI with the data
             if (isSelected)
@@ -109,8 +125,14 @@ namespace Telltale_IMAP_Editor
             ui_luascriptfunctionname_label.IsEnabled = isSelected;
             ui_controllerindexoverride_label.IsEnabled = isSelected;
 
+            ui_eventtype_label.Visibility = isSelected_visible;
+            ui_inputkeycode_label.Visibility = isSelected_visible;
+            ui_luascriptfunctionname_label.Visibility = isSelected_visible;
+            ui_controllerindexoverride_label.Visibility = isSelected_visible;
+
             //enable the save changes button only when something is selected
             ui_eventmappings_savechanges_button.IsEnabled = isSelected;
+            ui_eventmappings_savechanges_button.Visibility = isSelected_visible;
 
             //enable these elements only if there is a file open
             ui_eventmappings_add_button.IsEnabled = isFileOpen;
@@ -153,6 +175,7 @@ namespace Telltale_IMAP_Editor
 
             //initalize the open file window
             openFile_SetGameVersion = new OpenFile_SetGameVersion(editor);
+            ThemeManager.Current.ChangeTheme(openFile_SetGameVersion, appTheme); //change the theme to match
             openFile_SetGameVersion.ShowDialog(); //freezes this current window until the prompt is finished/closed
 
             //clear the de focus effect
@@ -293,6 +316,7 @@ namespace Telltale_IMAP_Editor
 
             //initalize the open file window
             openFile_SetGameVersion = new OpenFile_SetGameVersion(editor);
+            ThemeManager.Current.ChangeTheme(openFile_SetGameVersion, appTheme); //change the theme to match
             openFile_SetGameVersion.ShowDialog(); //freezes this current window until the prompt is finished/closed
 
             //clear the de focus effect
@@ -316,6 +340,15 @@ namespace Telltale_IMAP_Editor
 
             //start the process
             Process.Start(processStartInfo);
+        }
+
+        private void ui_menu_toggleTheme_Click(object sender, RoutedEventArgs e)
+        {
+            //reverse the theme
+            isLightTheme = !isLightTheme;
+
+            //update the UI
+            UpdateUI();
         }
     }
 }

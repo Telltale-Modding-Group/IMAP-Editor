@@ -43,16 +43,8 @@ namespace Telltale_IMAP_Editor
                 context.Dispose();
 
             //if we already have an input mapper object, dispose of it
-            //if (inputMapper != null)
-            //    inputMapper.Dispose();
-
-            //if we already have a reading byte stream object, dispose of it
-            //if (byteStream != null)
-            //    byteStream.Dispose();
-
-            //if we already have a writing byte stream object, dispose of it
-            //if (byteOutStream != null)
-            //    byteOutStream.Dispose();
+            if (inputMapper != null)
+                inputMapper.Dispose();
 
             if (eventMappingItems != null)
                 eventMappingItems.Clear();
@@ -108,10 +100,6 @@ namespace Telltale_IMAP_Editor
         /// </summary>
         public void Save_IMAP()
         {
-            //if we already have a writing byte stream object, dispose of it
-            //if (byteOutStream != null)
-            //    byteOutStream.Dispose();
-
             //creates a bytestream of the given file
             byteOutStream = new ByteOutStream(currentlyOpenFilePath);
 
@@ -133,10 +121,6 @@ namespace Telltale_IMAP_Editor
         /// </summary>
         public void SaveAs_IMAP(string newFilePath)
         {
-            //f we already have a writing byte stream object, dispose of it
-            //if (byteOutStream != null)
-            //    byteOutStream.Dispose();
-
             //creates a bytestream of the given file
             byteOutStream = new ByteOutStream(newFilePath);
 

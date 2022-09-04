@@ -1,0 +1,14 @@
+v1.0.0
+- First release
+
+v1.0.1
+- [Fix] Build configuration, so the app starts correctly with all dependencies embeded and included.
+
+v1.0.2
+- [Attempted Fix] issue with LibTelltale crashing when opening an .imap file
+
+v1.0.3
+- [Fix] LibTelltale crashing when opening an .imap file.
+- [Fix] Long imap paths overflowing in the UI on both the Open window and the main window.
+- [Changed] imap UI entry fields are both disabled and hidden now when an imap entry is not selected.
+- [Added] UI App Theme Toggle (Light/Dark mode)

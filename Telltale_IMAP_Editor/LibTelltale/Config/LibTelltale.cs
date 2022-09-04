@@ -24,7 +24,7 @@ namespace LibTelltale {
 		/// <summary>
 		/// The Minimum version required of the LibTelltale DLL for this library to work.
 		/// </summary>
-		public static readonly Version MIN_VERSION = Version.Parse("2.9.3");
+		public static readonly Version MIN_VERSION = Version.Parse("3.0.8");
 
 		/// <summary>
 		/// If the given game ID uses the old telltale tool, for games before and including Game of Thrones.
@@ -75,6 +75,13 @@ namespace LibTelltale {
 		/// When you attempt to load a .vers (MetaStreamedFile_Vers) which is already loaded or one with the same structure is.
 		/// </summary>
 		public static readonly uint OPEN_VERS_ALREADY_LOADED = 4;
+
+		/// <summary>
+		/// If you open a specific type and it returns this then there is a warning you should be aware of. See the type's class summary for info. If there's nothing, it wont
+		/// return this value ever.
+		/// </summary>
+		public static readonly uint OPEN_WARN = 5;
+
 		static Config() {
 			if (MIN_VERSION > Version.Parse (GetVersion ()))
 				throw new LibTelltaleException (String.Format("Cannot use LibTelltale v{0}, the minimum version required is v{1}", GetVersion(), MIN_VERSION));
@@ -851,7 +858,8 @@ namespace LibTelltale {
 		public Handle(IntPtr ptr)
         {
 			this.reference = ptr;
-        }
+			this.v = (h)Marshal.PtrToStructure(reference, typeof(h));
+		}
 
 		public string FindReferenced(TTContext ctx)
         {
@@ -860,6 +868,7 @@ namespace LibTelltale {
 
 		public string GetName()
         {
+			this.v = (h)Marshal.PtrToStructure(reference, typeof(h));
 			IntPtr ptr = this.v.name;
 			if (ptr.Equals(IntPtr.Zero)) return "";
 			return Marshal.PtrToStringAnsi(ptr);
@@ -867,6 +876,7 @@ namespace LibTelltale {
 
 		public ulong GetCRC()
         {
+			this.v = (h)Marshal.PtrToStructure(reference, typeof(h));
 			return this.v.crc;
         }
 
@@ -878,6 +888,7 @@ namespace LibTelltale {
 
 		public void SetName(string name)
         {
+			this.v = (h)Marshal.PtrToStructure(reference, typeof(h));
 			IntPtr ptr = Marshal.StringToHGlobalAnsi(name);
             if (!this.v.name.Equals(IntPtr.Zero))
             {

@@ -18,7 +18,7 @@
 
     <mah:MetroWindow.RightWindowCommands>
         <mah:WindowCommands>
-            <Label Name="ui_window_appversion_label" Content="v1.0.2" ToolTip="Application Version"/>
+            <Label Name="ui_window_appversion_label" Content="v1.0.3" ToolTip="Application Version" Foreground="{DynamicResource MahApps.Brushes.Badged.Foreground}" />
             <Button Name="ui_window_help_button" Content="Help" ToolTip="Get Help for this Application." Click="ui_window_help_button_Click">
                 <Button.ContentTemplate>
                     <DataTemplate>
@@ -55,6 +55,11 @@
                         <iconPacks:Codicons Kind="SaveAs"></iconPacks:Codicons>
                     </MenuItem.Icon>
                 </MenuItem>
+                <MenuItem Name="ui_menu_toggleTheme" Header="Toggle App Theme" Click="ui_menu_toggleTheme_Click" Margin="7,0,0,0" ToolTip="Toggles the Theme of the app from Light to Dark">
+                    <MenuItem.Icon>
+                        <iconPacks:Codicons Kind="ColorMode"></iconPacks:Codicons>
+                    </MenuItem.Icon>
+                </MenuItem>
             </Menu>
         </DockPanel>
 
@@ -66,7 +71,7 @@
             </Grid.ColumnDefinitions>
 
             <Grid Grid.Column="0">
-                <TextBox Name="ui_filelocation_textbox" Height="22" Margin="10,10,10,0" TextWrapping="Wrap" Text=".imap File Location" IsReadOnly="True" VerticalAlignment="Top" MouseDoubleClick="ui_filelocation_textbox_MouseDoubleClick" ToolTip="The path of the currently open .imap file on the disk."/>
+                <TextBox Name="ui_filelocation_textbox" Height="22" Margin="10,10,10,0" TextWrapping="NoWrap" Text=".imap File Location" IsReadOnly="True" VerticalAlignment="Top" MouseDoubleClick="ui_filelocation_textbox_MouseDoubleClick" ToolTip="The path of the currently open .imap file on the disk."/>
                 <ListView Name="ui_eventmappings_listview" Margin="10,41,10,55" SelectionChanged="ui_eventmappings_listview_SelectionChanged" ToolTip="The main listview for all of the event map entries in the imap file.">
                     <ListView.View>
                         <GridView>

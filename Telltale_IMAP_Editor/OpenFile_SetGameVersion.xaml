@@ -21,7 +21,7 @@
         <Button Name="ui_cancel_button" Content="Cancel" Margin="0,0,90,10" VerticalAlignment="Bottom" Width="75" HorizontalAlignment="Right" Click="ui_cancel_button_Click" ToolTip="Cancel opening an .imap file."/>
         <Label Name="ui_pathTitle_label" Content="Path of the .imap file to open." Margin="10,10,10,0" VerticalAlignment="Top"/>
         <Button Name="ui_pathBrowse_button" Content="Browse" HorizontalAlignment="Right" Margin="0,41,10,0" VerticalAlignment="Top" Width="75" Click="ui_pathBrowse_button_Click" ToolTip="Browse for the path of the .imap file on the disk."/>
-        <TextBox Name="ui_path_textbox" Margin="10,42,90,0" Text="" TextWrapping="Wrap" IsReadOnly="True" VerticalAlignment="Top" MouseDoubleClick="ui_path_textbox_MouseDoubleClick" ToolTip="The path of the .imap file on the disk."/>
+        <TextBox Name="ui_path_textbox" Margin="10,42,90,0" Text="" TextWrapping="NoWrap" IsReadOnly="True" VerticalAlignment="Top" MouseDoubleClick="ui_path_textbox_MouseDoubleClick" ToolTip="The path of the .imap file on the disk."/>
         <Label Name="ui_imapVersionTitle_label" Content=".imap File Version (Select which game the .imap file came from)" Margin="10,73,10,0" VerticalAlignment="Top"/>
     </Grid>
 </mah:MetroWindow>

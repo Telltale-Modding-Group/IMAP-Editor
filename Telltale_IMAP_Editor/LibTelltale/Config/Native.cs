@@ -18,6 +18,18 @@ namespace LibTelltaleNative
 		public static extern IntPtr Abstract_DCArray_At(IntPtr buf, int index);
 
 		[DllImport("LibTelltale.dll")]
+		public static extern IntPtr Scene_Create();
+
+		[DllImport("LibTelltale.dll")]
+		public static extern void Scene_Free(IntPtr scene);
+
+		[DllImport("LibTelltale.dll")]
+		public static extern bool Scene_Flush(IntPtr ctx, IntPtr scene);
+
+		[DllImport("LibTelltale.dll")]
+		public static extern int Scene_Open(IntPtr ctx, IntPtr scene);
+
+		[DllImport("LibTelltale.dll")]
 		public static extern IntPtr Abstract_DCArray_Create();
 
 		[DllImport("LibTelltale.dll")]

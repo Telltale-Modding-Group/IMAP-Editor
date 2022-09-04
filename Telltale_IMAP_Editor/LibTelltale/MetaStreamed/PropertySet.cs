@@ -16,13 +16,13 @@ using System.Collections;
  * - module_animation_constraints							| contain slots of IK which there is no need to support
  * - module_dlgProps_production_exchangeNodes.prop			| F0 AC CB 4E 15 E1 BC CE (int/enum)
  * - Below I haven't seen examples of it with data, so I cant add support yet
- * - any footstep banks (module_footsteps/module_footsteps2)| most module_footsteps etc (i know the types its just the actual value i dont know yet i havent seen it with data)
+ * - any footstep1 banks (module_footsteps2)				| i know the types its just the actual value i dont know yet i havent seen it with data.  foots2 ive seen
  * - module_particleemitter.prop							| dcarray of particlepropconnect? theres probably more after this property; whats particlepropconnect?
  * - project_idle.prop/prefs_idle.prop						| type 'idleslotdefaults' not supported
  * - project_localization.prop								| type 'localization::language' got to many unknown values
  * - project_fonts.prop										| Used to work, but different games have lots of versions and its hard to keep track
  * - platform.prop - TWD DE									| C0 70 29 23 49 47 04 11
- * - project_render_system.prop - TWD DE					| Some type of map<x,y,less<x or y>>3e9f3ec23c34f712
+ * - project_render_system.prop - TWD DE					| Some type of map<x,y,less<x or y>> 3e9f3ec23c34f712
  * 
  */
 namespace LibTelltale
@@ -285,11 +285,65 @@ namespace LibTelltale
 		public int i;//??
 	}
 
+	//Used in scenes mostly, holds data for a meshes/objects location (Im 99% sure)
+    public struct LocationInfo {
+		public IntPtr reference;
+		public string mGroup;//if it has no group, will be an empty
+		public Vector3 mRotation;
+		public float mScale;
+		public Vector3 mPosition;
+	}
+
+
 	/// <summary>
 	/// This class holds all of the key types supported (which is about 99% of all of the types there are) in the library.
 	/// </summary>
 	public static class KeyTypes
 	{
+
+		public static readonly KeyTypeHandle<LocationInfo> TYPE_LOCATION_INFO = new KeyTypeHandle<LocationInfo>("locationinfo", (x, old) =>
+		{
+			if (x.mGroup != null && x.mGroup.Length > 0)
+			{
+				IntPtr group = Marshal.ReadIntPtr(x.reference);
+				if (!group.Equals(IntPtr.Zero))
+				{
+					Native.hMemory_FreeArray(group);
+				}
+				Marshal.WriteIntPtr(x.reference, Config.CreateString(x.mGroup));
+			}
+			Marshal.WriteInt32(x.reference, 16, BitConverter.SingleToInt32Bits(x.mRotation.x));
+			Marshal.WriteInt32(x.reference, 20, BitConverter.SingleToInt32Bits(x.mRotation.y));
+			Marshal.WriteInt32(x.reference, 24, BitConverter.SingleToInt32Bits(x.mRotation.z));
+			Marshal.WriteInt32(x.reference, 28, BitConverter.SingleToInt32Bits(x.mScale));
+			Marshal.WriteInt32(x.reference, 32, BitConverter.SingleToInt32Bits(x.mPosition.x));
+			Marshal.WriteInt32(x.reference, 36, BitConverter.SingleToInt32Bits(x.mPosition.y));
+			Marshal.WriteInt32(x.reference, 40, BitConverter.SingleToInt32Bits(x.mPosition.z));
+			return x.reference;
+		}, x =>
+		{
+			LocationInfo inf = new LocationInfo();
+			inf.reference = x;
+			IntPtr group = Marshal.ReadIntPtr(x);
+            if (group.Equals(IntPtr.Zero))
+            {
+				inf.mGroup = "";
+            }
+            else
+            {
+				inf.mGroup = Marshal.PtrToStringAnsi(group);
+            }
+			inf.mPosition = new Vector3();
+			inf.mRotation = new Vector3();
+			inf.mRotation.x = BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 16));
+			inf.mRotation.y = BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 20));
+			inf.mRotation.z = BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 24));
+			inf.mScale =	  BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 28));
+			inf.mPosition.x = BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 32));
+			inf.mPosition.y = BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 36));
+			inf.mPosition.z = BitConverter.Int32BitsToSingle(Marshal.ReadInt32(x, 40));
+			return inf;
+		});
 
 		//dont really need to use this or any delete methods since the lib does that for u
 		public static void DeleteInternalLightData(T3LightEnvInternalData e)
@@ -1164,17 +1218,6 @@ namespace LibTelltale
 		}, x =>
 		{
 			return Marshal.ReadInt32(x);
-		});
-
-		//i dont know about this one so you cant write it, but u can read it. it will always be an 0x30 byte long byte array of the values i have no idea about
-		public static readonly KeyTypeHandle<byte[]> TYPE_LOCATION_INFO = new KeyTypeHandle<byte[]>("locationinfo", (x, old) =>
-		{
-			return old;//editing not allowed
-		}, x =>
-		{
-			byte[] ret = new byte[0x30];
-			Marshal.Copy(x, ret,0, 0x30);
-			return ret;
 		});
 
 		public static readonly KeyTypeHandle<int> TYPE_ZTEST_FUNCTION = new KeyTypeHandle<int>("ztestfunction", (x, old) =>
@@ -3056,13 +3099,13 @@ namespace LibTelltale
         }
 
 		/// <summary>
-		/// Gets the parent properties of this property set as a string array (will contain numbers if the crc lookup couldn't find the parent property file name
+		/// Gets the parent properties of this property set
 		/// </summary>
-		public string[] GetParentProperties(){
+		public Handle[] GetParentProperties(){
 			IntPtr parents = this.Parents ();
-			string[] ret = new string[Native.Buffer_DCArray_Size (parents)];
+			Handle[] ret = new Handle[Native.Abstract_DCArray_Size(parents)];
 			for (int i = 0; i < ret.Length; i++) {
-				ret [i] = Marshal.PtrToStringAnsi (Native.Buffer_DCArray_At (parents, i));
+				ret [i] = new Handle(Native.Abstract_DCArray_At (parents, i));
 			}
 			return ret;
 		}
@@ -3072,9 +3115,7 @@ namespace LibTelltale
 		/// </summary>
 		/// <param name="propName"></param>
 		public void AddParentProperties(string propName){
-			IntPtr ptr = Marshal.StringToHGlobalAnsi (propName);
-			Native.Buffer_DCArray_Add (this.Parents (), Native.hMemory_CreateArray (ptr));
-			Marshal.FreeHGlobal (ptr);
+			Native.Abstract_DCArray_Add(this.Parents(), new Handle(propName).Interal_Get());
 		}
 
 		/// <summary>
@@ -3130,14 +3171,14 @@ namespace LibTelltale
 		public void RemoveParentProperties(string propName){
 			int index = -1;
 			int i = 0;
-			foreach(string p in this.GetParentProperties()){
-				if(p.Equals(propName)) {
+			foreach(Handle p in this.GetParentProperties()){
+				if(p.GetName().Equals(propName)) {
 					index = i;
 					break;
 				}
 				i++;
 			}
-			Native.Buffer_DCArray_Remove (this.Parents (), Native.Buffer_DCArray_At (this.Parents (), index));
+			Native.Abstract_DCArray_Remove (this.Parents (), Native.Abstract_DCArray_At (this.Parents (), index));
 		}
 
 		protected IntPtr Parents(){

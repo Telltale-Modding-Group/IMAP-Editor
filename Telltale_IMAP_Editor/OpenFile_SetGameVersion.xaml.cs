@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Telltale_IMAP_Editor.Utillities;
+using ControlzEx.Theming;
 using System.IO;
 
 namespace Telltale_IMAP_Editor
