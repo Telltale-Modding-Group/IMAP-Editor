@@ -1,8 +1,4 @@
 # IMAP-Editor
-
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Telltale-Modding-Group/IMAP-Editor)](https://github.com/Telltale-Modding-Group/IMAP-Editor/releases)
-[![Github All Releases](https://img.shields.io/github/downloads/Telltale-Modding-Group/IMAP-Editor/total.svg)](https://github.com/Telltale-Modding-Group/IMAP-Editor/releases)  
-
 **Releases are now being put out! You can get them [HERE](https://github.com/Telltale-Modding-Group/IMAP-Editor/releases)!**
 **If you need help or have questions about the application, click [HERE](https://github.com/Telltale-Modding-Group/IMAP-Editor/wiki)!**
 
